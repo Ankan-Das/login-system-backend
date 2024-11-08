@@ -19,8 +19,8 @@ print("Migrating ...")
 migrate = Migrate(app, db)
 print("Migrating Done!")
 
-# CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://login-system-frontend-rho.vercel.app"}})
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://login-system-frontend-rho.vercel.app"}})
+# CORS(app, supports_credentials=True)
 # Define the database model directly in app.py
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
