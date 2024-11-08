@@ -19,7 +19,8 @@ print("Migrating ...")
 migrate = Migrate(app, db)
 print("Migrating Done!")
 
-CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://login-system-frontend-rho.vercel.app"}})
+# CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://login-system-frontend-rho.vercel.app"}})
+CORS(app, supports_credentials=True)
 # Define the database model directly in app.py
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -73,7 +74,15 @@ def login():
     if user and bcrypt.check_password_hash(user.password, password) and user.role == role:
         session['user_id'] = user.id
         print("inside login", session)
-        return jsonify({"message": "Login successful"}), 200
+        response = make_response(jsonify({"message": "Login successful"}), 200)
+        response.set_cookie(
+            'session', 
+            'your_cookie_value', 
+            httponly=True, 
+            samesite='None',   # Allows cross-origin cookies
+            secure=True        # Required if using HTTPS; use secure=False for local testing
+        )
+        return response
 
     return jsonify({"message": "Invalid credentials"}), 401
 
