@@ -2,15 +2,21 @@ from flask import Flask, request, jsonify, session, redirect, url_for, make_resp
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+from flask_migrate import Migrate
+
+import os
 
 # Create the Flask app instance
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL','sqlite:///users.db')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY','your_secret_key')
 
 # Initialize the extensions
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+
+print("Migrating ...")
+migrate = Migrate(app, db)
 
 CORS(app, supports_credentials=True)
 # Define the database model directly in app.py
