@@ -75,13 +75,7 @@ def login():
         session['user_id'] = user.id
         print("inside login", session)
         response = make_response(jsonify({"message": "Login successful"}), 200)
-        response.set_cookie(
-            'session', 
-            'your_cookie_value', 
-            httponly=True, 
-            samesite='None',   # Allows cross-origin cookies
-            secure=True        # Required if using HTTPS; use secure=False for local testing
-        )
+
         return response
 
     return jsonify({"message": "Invalid credentials"}), 401
