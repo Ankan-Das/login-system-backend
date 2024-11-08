@@ -17,8 +17,9 @@ bcrypt = Bcrypt(app)
 
 print("Migrating ...")
 migrate = Migrate(app, db)
+print("Migrating Done!")
 
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://login-system-frontend-rho.vercel.app"}})
 # Define the database model directly in app.py
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -102,6 +103,9 @@ def logout():
 def test():
     print(session)
     return 'test'
+
+
+print("All Set !!!")
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=10000)
